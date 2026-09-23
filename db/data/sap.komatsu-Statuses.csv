@@ -1,0 +1,5 @@
+code,name,criticality
+OPE,Operativo / En Faena,3
+MAN,En Mantenimiento Programado,2
+CRI,Falla Crítica / Taller,1
+RES,En Reserva / Standby,0

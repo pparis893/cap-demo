@@ -1,0 +1,98 @@
+_schema-version: 3.3.0
+ID: cap-demo
+version: 1.0.0
+description: "Komatsu Fleet Management - CAP on SAP HANA Cloud"
+parameters:
+  enable-parallel-deployments: true
+build-parameters:
+  before-all:
+    - builder: custom
+      commands:
+        - npm ci
+        - npx cds build --production
+
+modules:
+  # ---------------------------------------------------------------------------
+  # CAP Node.js service (OData V4 /fleet)
+  # ---------------------------------------------------------------------------
+  - name: cap-demo-srv
+    type: nodejs
+    path: gen/srv
+    parameters:
+      instances: 1
+      memory: 256M
+      disk-quota: 1024M
+      buildpack: nodejs_buildpack
+      readiness-health-check-type: http
+      readiness-health-check-http-endpoint: /health
+    build-parameters:
+      builder: npm-ci
+    provides:
+      - name: srv-api # required by consumers of CAP services (e.g. approuter)
+        properties:
+          srv-url: ${default-url}
+    requires:
+      - name: cap-demo-db
+      - name: cap-demo-auth
+
+  # ---------------------------------------------------------------------------
+  # HDI deployer: creates tables/views in HANA and loads db/data/*.csv
+  # (CSV files are converted to .hdbtabledata by `cds build --production`)
+  # ---------------------------------------------------------------------------
+  - name: cap-demo-db-deployer
+    type: hdb
+    path: gen/db
+    parameters:
+      buildpack: nodejs_buildpack
+      memory: 256M
+      disk-quota: 1024M
+    properties:
+      # Always (re)deploy every artifact and reload the CSV data, even if the
+      # HDI delta detection thinks nothing changed (e.g. after a rolled-back build)
+      HDI_DEPLOY_OPTIONS:
+        treat_unmodified_as_modified: true
+    requires:
+      - name: cap-demo-db
+
+  # ---------------------------------------------------------------------------
+  # Application Router (entry point, handles XSUAA login)
+  # ---------------------------------------------------------------------------
+  - name: cap-demo
+    type: approuter.nodejs
+    path: app/router
+    parameters:
+      keep-existing-routes: true
+      disk-quota: 256M
+      memory: 256M
+    requires:
+      - name: srv-api
+        group: destinations
+        properties:
+          name: srv-api # must be used in xs-app.json as well
+          url: ~{srv-url}
+          forwardAuthToken: true
+      - name: cap-demo-auth
+    provides:
+      - name: app-api
+        properties:
+          app-protocol: ${protocol}
+          app-uri: ${default-uri}
+
+resources:
+  # HDI container on SAP HANA Cloud
+  - name: cap-demo-db
+    type: com.sap.xs.hdi-container
+    parameters:
+      service: hana
+      service-plan: hdi-shared
+
+  # XSUAA for authentication
+  - name: cap-demo-auth
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: xsuaa
+      service-plan: application
+      path: ./xs-security.json
+      config:
+        xsappname: cap-demo-${org}-${space}
+        tenant-mode: dedicated

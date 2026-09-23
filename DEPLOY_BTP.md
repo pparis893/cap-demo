@@ -28,7 +28,7 @@ CSV content. Edit the CSVs and redeploy to refresh the data.
 
 ```bash
 npm install                 # updates node_modules
-cf login -a https://api.cf.<region>.hana.ondemand.com
+cf login -a https://api.cf.us10-001.hana.ondemand.com/
 mbt build -t mta_archives   # or: npm run build:mta
 cf deploy mta_archives/cap-demo_1.0.0.mtar   # or: npm run deploy
 ```

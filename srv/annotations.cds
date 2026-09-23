@@ -11,7 +11,7 @@ annotate FleetService.Equipments with {
     Common.Text: category.name,
     Common.TextArrangement: #TextOnly,
     Common.ValueList: {
-      Label: 'Categorías de Equipo',
+      Label: '{i18n>EquipmentCategories}',
       CollectionPath: 'Categories',
       Parameters: [
         { $Type: 'Common.ValueListParameterInOut', LocalDataProperty: category_code, ValueListProperty: 'code' },
@@ -25,7 +25,7 @@ annotate FleetService.Equipments with {
     Common.Text: status.name,
     Common.TextArrangement: #TextOnly,
     Common.ValueList: {
-      Label: 'Estados Operativos',
+      Label: '{i18n>OperatingStatuses}',
       CollectionPath: 'Statuses',
       Parameters: [
         { $Type: 'Common.ValueListParameterInOut', LocalDataProperty: status_code, ValueListProperty: 'code' },
@@ -47,8 +47,8 @@ annotate FleetService.Equipments with @(
 
   // Identificación y Cabecera de la Entidad
   UI.HeaderInfo: {
-    TypeName: 'Equipo Komatsu',
-    TypeNamePlural: 'Flota de Equipos Komatsu',
+    TypeName: '{i18n>KomatsuEquipment}',
+    TypeNamePlural: '{i18n>KomatsuEquipmentFleet}',
     Title: {
       $Type: 'UI.DataField',
       Value: name
@@ -72,45 +72,45 @@ annotate FleetService.Equipments with @(
     {
       $Type: 'UI.DataField',
       Value: code,
-      Label: 'Código'
+      Label: '{i18n>Code}'
     },
     {
       $Type: 'UI.DataField',
       Value: name,
-      Label: 'Nombre de Equipo'
+      Label: '{i18n>EquipmentName}'
     },
     {
       $Type: 'UI.DataField',
       Value: category_code,
-      Label: 'Categoría'
+      Label: '{i18n>Category}'
     },
     {
       $Type: 'UI.DataField',
       Value: status_code,
-      Label: 'Estado Operativo',
+      Label: '{i18n>OperatingStatus}',
       Criticality: status.criticality,
       CriticalityRepresentation: #WithoutIcon
     },
     {
       $Type: 'UI.DataField',
       Value: healthScore,
-      Label: 'Salud (%)',
+      Label: '{i18n>Health}',
       Criticality: status.criticality
     },
     {
       $Type: 'UI.DataField',
       Value: operatingHours,
-      Label: 'Horas Operación'
+      Label: '{i18n>OperatingHrs}'
     },
     {
       $Type: 'UI.DataField',
       Value: dailyRate,
-      Label: 'Tarifa Diaria'
+      Label: '{i18n>DailyRate}'
     },
     {
       $Type: 'UI.DataField',
       Value: location,
-      Label: 'Ubicación / Faena'
+      Label: '{i18n>LocationSite}'
     }
   ],
 
@@ -140,31 +140,31 @@ annotate FleetService.Equipments with @(
 
   UI.DataPoint #StatusHeader: {
     Value: status_code,
-    Title: 'Estado Actual',
+    Title: '{i18n>CurrentStatus}',
     Criticality: status.criticality
   },
 
   UI.DataPoint #OperatingHoursHeader: {
     Value: operatingHours,
-    Title: 'Horas Acumuladas'
+    Title: '{i18n>AccumulatedHours}'
   },
 
   UI.DataPoint #HealthScoreHeader: {
     Value: healthScore,
-    Title: 'Índice de Salud',
+    Title: '{i18n>HealthIndex2}',
     Criticality: status.criticality
   },
 
   UI.DataPoint #DailyRateHeader: {
     Value: dailyRate,
-    Title: 'Tarifa / Día'
+    Title: '{i18n>RateDay}'
   },
 
   UI.FieldGroup #SupervisorHeader: {
     Data: [
-      { Value: supervisorName, Label: 'Supervisor Responsable' },
-      { Value: supervisorEmail, Label: 'Email' },
-      { Value: supervisorPhone, Label: 'Teléfono' }
+      { Value: supervisorName, Label: '{i18n>ResponsibleSupervisor}' },
+      { Value: supervisorEmail, Label: '{i18n>Email}' },
+      { Value: supervisorPhone, Label: '{i18n>Phone}' }
     ]
   },
 
@@ -173,16 +173,16 @@ annotate FleetService.Equipments with @(
     {
       $Type: 'UI.CollectionFacet',
       ID: 'GeneralSection',
-      Label: 'Información del Equipo',
+      Label: '{i18n>EquipmentInformation}',
       Facets: [
         {
           $Type: 'UI.ReferenceFacet',
-          Label: 'Ficha Técnica',
+          Label: '{i18n>TechnicalData}',
           Target: '@UI.FieldGroup#TechnicalData'
         },
         {
           $Type: 'UI.ReferenceFacet',
-          Label: 'Operación y Faena',
+          Label: '{i18n>OperationAndSite}',
           Target: '@UI.FieldGroup#OperationData'
         }
       ]
@@ -190,13 +190,13 @@ annotate FleetService.Equipments with @(
     {
       $Type: 'UI.ReferenceFacet',
       ID: 'MaintenanceSection',
-      Label: 'Historial y Órdenes de Mantenimiento',
+      Label: '{i18n>MaintenanceHistoryAndOrders}',
       Target: 'maintenanceLogs/@UI.LineItem'
     },
     {
       $Type: 'UI.ReferenceFacet',
       ID: 'AuditSection',
-      Label: 'Auditoría del Sistema',
+      Label: '{i18n>SystemAudit}',
       Target: '@UI.FieldGroup#AuditData'
     }
   ],
@@ -204,35 +204,35 @@ annotate FleetService.Equipments with @(
   // Grupos de Campos (FieldGroups) para el Object Page
   UI.FieldGroup #TechnicalData: {
     Data: [
-      { Value: code, Label: 'Código Identificador' },
-      { Value: name, Label: 'Nombre del Equipo' },
-      { Value: model, Label: 'Modelo Fabricante' },
-      { Value: serialNumber, Label: 'Número de Serie' },
-      { Value: category_code, Label: 'Categoría' },
-      { Value: manufactureYear, Label: 'Año de Fabricación' },
-      { Value: imageUrl, Label: 'URL Imagen' }
+      { Value: code, Label: '{i18n>IdentifierCode}' },
+      { Value: name, Label: '{i18n>NameOfEquipment}' },
+      { Value: model, Label: '{i18n>ManufacturerModel}' },
+      { Value: serialNumber, Label: '{i18n>SerialNumber}' },
+      { Value: category_code, Label: '{i18n>Category}' },
+      { Value: manufactureYear, Label: '{i18n>ManufactureYear}' },
+      { Value: imageUrl, Label: '{i18n>ImageUrl}' }
     ]
   },
 
   UI.FieldGroup #OperationData: {
     Data: [
-      { Value: status_code, Label: 'Estado Operativo' },
-      { Value: location, Label: 'Faena Minera / Ubicación' },
-      { Value: operatingHours, Label: 'Horas de Operación' },
-      { Value: healthScore, Label: 'Índice de Salud (%)' },
-      { Value: dailyRate, Label: 'Tarifa Diaria' },
-      { Value: currency_code, Label: 'Moneda' },
-      { Value: lastServiceDate, Label: 'Último Servicio Realizado' },
-      { Value: nextServiceDate, Label: 'Próximo Servicio Programado' }
+      { Value: status_code, Label: '{i18n>OperatingStatus}' },
+      { Value: location, Label: '{i18n>MineSiteLocation}' },
+      { Value: operatingHours, Label: '{i18n>OperatingHours}' },
+      { Value: healthScore, Label: '{i18n>HealthIndex}' },
+      { Value: dailyRate, Label: '{i18n>DailyRate}' },
+      { Value: currency_code, Label: '{i18n>Currency}' },
+      { Value: lastServiceDate, Label: '{i18n>LastServicePerformed}' },
+      { Value: nextServiceDate, Label: '{i18n>NextScheduledService}' }
     ]
   },
 
   UI.FieldGroup #AuditData: {
     Data: [
-      { Value: createdAt, Label: 'Fecha Creación' },
-      { Value: createdBy, Label: 'Creado Por' },
-      { Value: modifiedAt, Label: 'Última Modificación' },
-      { Value: modifiedBy, Label: 'Modificado Por' }
+      { Value: createdAt, Label: '{i18n>CreatedOn}' },
+      { Value: createdBy, Label: '{i18n>CreatedBy}' },
+      { Value: modifiedAt, Label: '{i18n>LastModified}' },
+      { Value: modifiedBy, Label: '{i18n>ModifiedBy}' }
     ]
   }
 
@@ -244,8 +244,8 @@ annotate FleetService.Equipments with @(
 annotate FleetService.MaintenanceLogs with @(
 
   UI.HeaderInfo: {
-    TypeName: 'Orden de Mantenimiento',
-    TypeNamePlural: 'Órdenes de Mantenimiento',
+    TypeName: '{i18n>MaintenanceOrder}',
+    TypeNamePlural: '{i18n>MaintenanceOrders}',
     Title: { Value: logNumber }
   },
 
@@ -253,65 +253,65 @@ annotate FleetService.MaintenanceLogs with @(
     {
       $Type: 'UI.DataField',
       Value: logNumber,
-      Label: 'N° Orden'
+      Label: '{i18n>OrderNo}'
     },
     {
       $Type: 'UI.DataField',
       Value: serviceDate,
-      Label: 'Fecha Servicio'
+      Label: '{i18n>ServiceDate}'
     },
     {
       $Type: 'UI.DataField',
       Value: maintenanceType,
-      Label: 'Tipo Mantenimiento'
+      Label: '{i18n>MaintType}'
     },
     {
       $Type: 'UI.DataField',
       Value: technician,
-      Label: 'Técnico Responsable'
+      Label: '{i18n>ResponsibleTechnician}'
     },
     {
       $Type: 'UI.DataField',
       Value: hoursSpent,
-      Label: 'Horas Invertidas'
+      Label: '{i18n>HoursSpent}'
     },
     {
       $Type: 'UI.DataField',
       Value: cost,
-      Label: 'Costo'
+      Label: '{i18n>Cost}'
     },
     {
       $Type: 'UI.DataField',
       Value: status,
-      Label: 'Estado',
+      Label: '{i18n>Status}',
       Criticality: criticality
     },
     {
       $Type: 'UI.DataField',
       Value: remarks,
-      Label: 'Observaciones Técnicas'
+      Label: '{i18n>TechnicalRemarks}'
     }
   ],
 
   UI.Facets: [
     {
       $Type: 'UI.ReferenceFacet',
-      Label: 'Detalle de la Orden',
+      Label: '{i18n>OrderDetails}',
       Target: '@UI.FieldGroup#LogDetail'
     }
   ],
 
   UI.FieldGroup #LogDetail: {
     Data: [
-      { Value: logNumber, Label: 'N° Orden' },
-      { Value: serviceDate, Label: 'Fecha de Ejecución' },
-      { Value: maintenanceType, Label: 'Tipo de Mantenimiento' },
-      { Value: technician, Label: 'Técnico Especialista' },
-      { Value: hoursSpent, Label: 'Horas Trabajadas' },
-      { Value: cost, Label: 'Costo del Servicio' },
-      { Value: currency_code, Label: 'Moneda' },
-      { Value: status, Label: 'Estado de la Orden' },
-      { Value: remarks, Label: 'Detalles y Observaciones' }
+      { Value: logNumber, Label: '{i18n>OrderNo}' },
+      { Value: serviceDate, Label: '{i18n>ExecutionDate}' },
+      { Value: maintenanceType, Label: '{i18n>MaintenanceType}' },
+      { Value: technician, Label: '{i18n>SpecialistTechnician}' },
+      { Value: hoursSpent, Label: '{i18n>HoursWorked}' },
+      { Value: cost, Label: '{i18n>ServiceCost}' },
+      { Value: currency_code, Label: '{i18n>Currency}' },
+      { Value: status, Label: '{i18n>OrderStatus}' },
+      { Value: remarks, Label: '{i18n>DetailsAndRemarks}' }
     ]
   }
 

@@ -1,0 +1,5 @@
+code,locale,name
+OPE,en,Operational / On Site
+MAN,en,Scheduled Maintenance
+CRI,en,Critical Failure / Workshop
+RES,en,In Reserve / Standby
